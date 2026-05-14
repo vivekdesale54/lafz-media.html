@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lafz.Media — Brands for Brands</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #e8197d;
+    --cyan: #00c8e0;
+    --purple: #9b5de5;
+    --gold: #f4a225;
+    --bg: #080808;
+    --bg2: #0f0f0f;
+    --bg3: #141414;
+    --text: #f0f0f0;
+    --muted: #888;
+    --grad: linear-gradient(135deg, var(--pink), var(--purple), var(--cyan));
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--pink);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--cyan);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transition: transform 0.08s ease, width 0.2s, height 0.2s;
+    mix-blend-mode: difference;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.3;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 500;
+    padding: 20px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-logo span { color: white; -webkit-text-fill-color: white; }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1.5px;
+    background: var(--pink);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: white; }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    padding: 10px 28px;
+    border: 1.5px solid var(--pink);
+    color: var(--pink);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .nav-cta:hover {
+    background: var(--pink);
+    color: white;
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(232,25,125,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,25,125,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,25,125,0.12) 0%, transparent 70%);
+    top: -200px; right: -100px;
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,200,224,0.1) 0%, transparent 70%);
+    bottom: -150px; left: 200px;
+    animation: glowPulse 5s ease-in-out infinite reverse;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(232,25,125,0.1);
+    border: 1px solid rgba(232,25,125,0.3);
+    padding: 6px 18px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 36px;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--pink);
+    border-radius: 50%;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .hero-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 10vw, 140px);
+    line-height: 0.9;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero-headline .grad-text {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.75em;
+  }
+  .hero-sub {
+    font-size: clamp(13px, 1.5vw, 16px);
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+    margin: 28px 0 48px;
+    animation: fadeUp 0.8s 0.2s ease both;
+    font-weight: 300;
+  }
+  .hero-sub strong { color: white; font-weight: 500; }
+
+  .hero-btns {
+    display: flex; gap: 20px; align-items: center;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .btn-primary {
+    padding: 16px 40px;
+    background: var(--grad);
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(232,25,125,0.4);
+  }
+  .btn-ghost {
+    padding: 15px 36px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  }
+  .btn-ghost:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  .hero-stats {
+    position: absolute; right: 60px; bottom: 80px; z-index: 2;
+    display: flex; flex-direction: column; gap: 30px;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+  .stat-item { text-align: right; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 1;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .scroll-indicator {
+    position: absolute; bottom: 40px; left: 60px; z-index: 2;
+    display: flex; align-items: center; gap: 14px;
+    color: var(--muted); font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    animation: fadeUp 0.8s 0.6s ease both;
+  }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: linear-gradient(to right, var(--pink), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine { 0%,100%{width:40px} 50%{width:80px} }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    padding: 20px 0;
+    background: var(--pink);
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+  }
+  .marquee-track {
+    display: flex;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    padding: 0 40px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: white;
+    display: flex; align-items: center; gap: 20px;
+    flex-shrink: 0;
+  }
+  .marquee-dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* SECTION COMMON */
+  section { padding: 120px 60px; position: relative; }
+  .section-tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 20px;
+    padding-left: 30px;
+    position: relative;
+  }
+  .section-tag::before {
+    content: '';
+    position: absolute; left: 0; top: 50%;
+    width: 20px; height: 1.5px;
+    background: var(--pink);
+    transform: translateY(-50%);
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 0.95;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+
+  /* ABOUT */
+  #about { background: var(--bg2); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 60px;
+  }
+  .about-text p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #aaa;
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+  .about-text p strong { color: white; font-weight: 500; }
+
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .pillar {
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .pillar::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--grad);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .pillar:hover { border-color: rgba(232,25,125,0.2); transform: translateY(-4px); }
+  .pillar:hover::before { transform: scaleX(1); }
+  .pillar-icon { font-size: 28px; margin-bottom: 14px; }
+  .pillar-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 8px;
+  }
+  .pillar-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* SERVICES */
+  #services { background: var(--bg); }
+  .services-intro {
+    max-width: 600px;
+    font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 70px; font-weight: 300;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    background: rgba(255,255,255,0.04);
+  }
+  .service-card {
+    background: var(--bg);
+    padding: 50px 40px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.4s;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--grad);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .service-card:hover { background: var(--bg2); }
+  .service-card:hover .service-num { opacity: 0.6; }
+  .service-num {
+    position: absolute; top: 30px; right: 30px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    transition: opacity 0.3s;
+    user-select: none;
+  }
+  .service-icon {
+    font-size: 36px; margin-bottom: 24px;
+    display: inline-block;
+    transition: transform 0.3s;
+  }
+  .service-card:hover .service-icon { transform: scale(1.15) rotate(-5deg); }
+  .service-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    color: white;
+  }
+  .service-sub {
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--pink); margin-bottom: 18px; font-weight: 500;
+  }
+  .service-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+  .service-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .stag {
+    font-size: 11px; padding: 5px 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    letter-spacing: 1px; text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .service-card:hover .stag {
+    border-color: rgba(0,200,224,0.3);
+    color: var(--cyan);
+  }
+
+  /* OTHER SERVICES */
+  .other-services {
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .other-card {
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 30px 24px;
+    text-align: center;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .other-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .other-icon { font-size: 32px; margin-bottom: 14px; }
+  .other-name { font-size: 14px; font-weight: 500; color: white; }
+  .other-color-1 { color: var(--gold); }
+  .other-color-2 { color: var(--pink); }
+  .other-color-3 { color: var(--cyan); }
+  .other-color-4 { color: var(--purple); }
+
+  /* PORTFOLIO */
+  #portfolio { background: var(--bg2); }
+  .portfolio-tabs {
+    display: flex; gap: 0;
+    margin-bottom: 50px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .ptab {
+    padding: 14px 30px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.3s;
+    background: none; border-top: none; border-left: none; border-right: none;
+  }
+  .ptab.active {
+    color: white;
+    border-bottom-color: var(--pink);
+  }
+  .ptab:hover { color: white; }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .portfolio-grid.reels-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .port-item {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16/10;
+    background: var(--bg3);
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .port-item.reel { aspect-ratio: 9/16; }
+  .port-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px;
+    transition: transform 0.5s;
+  }
+  .port-item:hover .port-placeholder { transform: scale(1.05); }
+  .play-btn {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.05);
+  }
+  .port-item:hover .play-btn {
+    border-color: var(--pink);
+    background: rgba(232,25,125,0.2);
+    transform: scale(1.1);
+  }
+  .port-label { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .port-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 20px;
+  }
+  .port-item:hover .port-overlay { opacity: 1; }
+  .port-overlay-text { font-size: 13px; color: white; font-weight: 500; }
+
+  /* BRAND TICKER */
+  .brand-section {
+    background: var(--bg);
+    padding: 60px;
+    overflow: hidden;
+  }
+  .brand-label {
+    text-align: center;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 40px;
+  }
+  .brand-ticker {
+    display: flex;
+    animation: marquee 25s linear infinite;
+    gap: 0;
+  }
+  .brand-item {
+    flex-shrink: 0;
+    padding: 0 50px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.15);
+    transition: color 0.3s;
+    white-space: nowrap;
+  }
+  .brand-item:hover { color: rgba(255,255,255,0.6); }
+
+  /* WHY US */
+  #why {
+    background: var(--bg2);
+    text-align: center;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: rgba(255,255,255,0.04);
+    margin-top: 70px;
+    text-align: left;
+  }
+  .why-card {
+    background: var(--bg2);
+    padding: 50px 40px;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .why-card::before {
+    content: attr(data-num);
+    position: absolute; bottom: 20px; right: 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 100px;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+  }
+  .why-card:hover { background: var(--bg3); }
+  .why-icon { font-size: 40px; margin-bottom: 24px; display: block; }
+  .why-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px; letter-spacing: 1px;
+    margin-bottom: 14px; color: white;
+  }
+  .why-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* CONTACT */
+  #contact {
+    background: var(--bg);
+    position: relative; overflow: hidden;
+  }
+  .contact-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,25,125,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .contact-inner {
+    position: relative; z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .contact-left .section-title { margin-bottom: 20px; }
+  .contact-desc { font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 40px; font-weight: 300; }
+  .contact-info { display: flex; flex-direction: column; gap: 20px; }
+  .cinfo {
+    display: flex; align-items: center; gap: 16px;
+    padding: 20px 24px;
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: border-color 0.3s;
+  }
+  .cinfo:hover { border-color: rgba(0,200,224,0.3); }
+  .cinfo-icon { font-size: 20px; }
+  .cinfo-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .cinfo-val { font-size: 14px; color: white; font-weight: 500; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-group label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: white;
+    padding: 14px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+    resize: none;
+    appearance: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--pink); }
+  .form-group textarea { height: 120px; }
+  .form-group select option { background: #1a1a1a; }
+  .form-submit {
+    padding: 18px 48px;
+    background: var(--grad);
+    color: white; border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: transform 0.3s, box-shadow 0.3s;
+    align-self: flex-start;
+  }
+  .form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(232,25,125,0.4);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg2);
+    padding: 60px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 50px;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
+  .social-links { display: flex; gap: 14px; }
+  .social-link {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s;
+    color: var(--muted);
+  }
+  .social-link:hover { border-color: var(--pink); color: var(--pink); }
+  .footer-col h4 {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 24px;
+    padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-col ul li a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s;
+  }
+  .footer-col ul li a:hover { color: white; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 30px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy { font-size: 12px; color: var(--muted); }
+  .footer-copy span {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
+  .footer-made { font-size: 12px; color: rgba(255,255,255,0.2); }
+
+  /* Tabs hidden */
+  .tab-content { display: none; }
+  .tab-content.active { display: grid; }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Mobile hamburger */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: white; transition: all 0.3s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    section { padding: 80px 24px; }
+    #hero { padding: 100px 24px 60px; }
+    .hero-headline { font-size: 64px; }
+    .hero-stats { position: static; flex-direction: row; gap: 40px; margin-top: 60px; }
+    .stat-item { text-align: left; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .portfolio-grid { grid-template-columns: 1fr 1fr; }
+    .portfolio-grid.reels-grid { grid-template-columns: 1fr 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; gap: 50px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .other-services { grid-template-columns: 1fr 1fr; }
+    .hero-stats { flex-wrap: wrap; }
+    .scroll-indicator { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Lafz<span>.Media</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#why">Why Us</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Let's Talk</a>
+  <div class="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">🎬 Creative Film & Media Agency · Pune</div>
+    <h1 class="hero-headline">
+      WE ARE<br>
+      <span class="grad-text">brands</span><br>
+      FOR BRANDS
+    </h1>
+    <p class="hero-sub">
+      We craft stories that <strong>build reputation</strong>, spark emotion, and drive real-world impact. Film. Photography. Campaigns. Impact.
+    </p>
+    <div class="hero-btns">
+      <a href="#portfolio" class="btn-primary">View Our Work</a>
+      <a href="#contact" class="btn-ghost">Start a Project</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Brands Served</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100+</div>
+      <div class="stat-label">Projects Done</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4+</div>
+      <div class="stat-label">Years Strong</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">Film Production <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Brand Strategy <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Product Photography <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Creative Campaigns <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Ad Films <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Social Reels <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Logo Design <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Film Production <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Brand Strategy <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Product Photography <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Creative Campaigns <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Ad Films <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Social Reels <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Logo Design <div class="marquee-dot"></div></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="section-tag">Who We Are</div>
+    <h2 class="section-title">ABOUT<br>LAFZ.MEDIA</h2>
+  </div>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>We are a <strong>creative film production company</strong> in the advertising space, helping brands connect, communicate, and stand out.</p>
+      <p>From powerful ideas to polished execution, we create content that doesn't just look good — <strong>it works.</strong></p>
+      <p>Based in Pune, we blend bold storytelling with precision craft, building campaigns that travel from screen to street and leave a lasting mark.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-icon">💡</div>
+        <div class="pillar-title">Strategic Storytelling</div>
+        <div class="pillar-desc">Creativity meets strategy to tell stories that move people and build brands.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🎬</div>
+        <div class="pillar-title">End-to-End Production</div>
+        <div class="pillar-desc">From concept to screen — every frame handled with precision and passion.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🎯</div>
+        <div class="pillar-title">Brand Focused</div>
+        <div class="pillar-desc">Every story is built around your brand's voice, values, and business goals.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🤝</div>
+        <div class="pillar-title">Built on Collaboration</div>
+        <div class="pillar-desc">The best work comes from strong partnerships and shared vision.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="reveal">
+    <div class="section-tag">What We Do</div>
+    <h2 class="section-title">OUR<br>SERVICES</h2>
+    <p class="services-intro">Ideas that move. Stories that stick. Campaigns that live beyond the screen.</p>
+  </div>
+
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-icon">🎬</div>
+      <div class="service-name">Film & Video Production</div>
+      <div class="service-sub">Cinematic Storytelling</div>
+      <div class="service-desc">Cinematic storytelling that brings brands to life. From concept to delivery, we craft every frame with intention.</div>
+      <div class="service-tags">
+        <span class="stag">Ad Films</span>
+        <span class="stag">Brand Videos</span>
+        <span class="stag">Corporate Films</span>
+        <span class="stag">Social Content</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-icon">📸</div>
+      <div class="service-name">Product & Photography</div>
+      <div class="service-sub">Striking Visuals</div>
+      <div class="service-desc">Striking visuals that make products unforgettable. We shoot with an eye for detail that sells.</div>
+      <div class="service-tags">
+        <span class="stag">Product Shoots</span>
+        <span class="stag">E-commerce</span>
+        <span class="stag">Lifestyle</span>
+        <span class="stag">Campaign Visuals</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-icon">📣</div>
+      <div class="service-name">Creative Campaigns</div>
+      <div class="service-sub">Real-World Impact</div>
+      <div class="service-desc">Big ideas. Real-world impact. Memorable brand moments that travel from screen to street.</div>
+      <div class="service-tags">
+        <span class="stag">Guerrilla Marketing</span>
+        <span class="stag">Brand Activations</span>
+        <span class="stag">Events</span>
+        <span class="stag">Experiential</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <div class="service-icon">🧠</div>
+      <div class="service-name">Brand Strategy & Content</div>
+      <div class="service-sub">Powerful Narratives</div>
+      <div class="service-desc">Smart thinking that shapes powerful brand narratives. We help you find your voice and amplify it.</div>
+      <div class="service-tags">
+        <span class="stag">Campaign Ideation</span>
+        <span class="stag">Content Planning</span>
+        <span class="stag">Creative Direction</span>
+        <span class="stag">Storytelling</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other Services -->
+  <div class="reveal" style="margin-top:70px;">
+    <div class="section-tag">Also Offering</div>
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:36px;margin-bottom:0;letter-spacing:1px;">OTHER SERVICES</h3>
+  </div>
+  <div class="other-services reveal">
+    <div class="other-card">
+      <div class="other-icon">🎨</div>
+      <div class="other-name other-color-1">Graphics Designing</div>
+    </div>
+    <div class="other-card">
+      <div class="other-icon">📢</div>
+      <div class="other-name other-color-2">Offline Marketing Campaigns</div>
+    </div>
+    <div class="other-card">
+      <div class="other-icon">📦</div>
+      <div class="other-name other-color-3">Packaging Designing</div>
+    </div>
+    <div class="other-card">
+      <div class="other-icon">✏️</div>
+      <div class="other-name other-color-4">Logo Designing</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="reveal">
+    <div class="section-tag">Our Work</div>
+    <h2 class="section-title">OUR<br>PORTFOLIO</h2>
+  </div>
+
+  <div class="portfolio-tabs reveal">
+    <button class="ptab active" onclick="switchTab(this, 'adfilms')">Ad Films</button>
+    <button class="ptab" onclick="switchTab(this, 'photography')">Photography</button>
+    <button class="ptab" onclick="switchTab(this, 'reels')">Reels</button>
+  </div>
+
+  <div id="adfilms" class="tab-content active portfolio-grid reveal">
+    <div class="port-item">
+      <div class="port-placeholder">
+        <div class="play-btn">▶</div>
+        <div class="port-label">Ad Film · Keep Smiling</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Brand Campaign Film</span></div>
+    </div>
+    <div class="port-item">
+      <div class="port-placeholder" style="background:linear-gradient(135deg,#1a1108,#0f0f0f)">
+        <div class="play-btn">▶</div>
+        <div class="port-label">Ad Film · Street Story</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Documentary Style Ad</span></div>
+    </div>
+    <div class="port-item">
+      <div class="port-placeholder" style="background:linear-gradient(135deg,#0a1a0a,#0f0f0f)">
+        <div class="play-btn">▶</div>
+        <div class="port-label">Ad Film · Amar</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Product Ad Film</span></div>
+    </div>
+    <div class="port-item">
+      <div class="port-placeholder" style="background:linear-gradient(135deg,#12001a,#0f0f0f)">
+        <div class="play-btn">▶</div>
+        <div class="port-label">Ad Film · Emotion Series</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Narrative Brand Film</span></div>
+    </div>
+    <div class="port-item">
+      <div class="port-placeholder" style="background:linear-gradient(135deg,#1a0a0a,#0f0f0f)">
+        <div class="play-btn">▶</div>
+        <div class="port-label">Corporate Film</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Corporate Brand Story</span></div>
+    </div>
+    <div class="port-item">
+      <div class="port-placeholder" style="background:linear-gradient(135deg,#0a0a1a,#0f0f0f)">
+        <div class="play-btn">▶</div>
+        <div class="port-label">Social Media Film</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Social Campaign</span></div>
+    </div>
+  </div>
+
+  <div id="photography" class="tab-content portfolio-grid reveal" style="grid-template-columns:repeat(4,1fr)">
+    <div class="port-item" style="aspect-ratio:1/1">
+      <div class="port-placeholder" style="background:linear-gradient(135deg,#0a1a08,#0f0f0f)">
+        <div style="font-size:40px">🫙</div>
+        <div class="port-label">Chipzzy · Banana Chips</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Product Photography</span></div>
+    </div>
+    <div class="port-item" style="aspect-ratio:1/1">
+      <div class="port-placeholder" style="background:linear-gradient(135deg,#1a0808,#0f0f0f)">
+        <div style="font-size:40px">🍽️</div>
+        <div class="port-label">Food · Too Addictive</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Food Photography</span></div>
+    </div>
+    <div class="port-item" style="aspect-ratio:1/1">
+      <div class="port-placeholder" style="background:linear-gradient(135deg,#0d0d14,#0f0f0f)">
+        <div style="font-size:40px">💎</div>
+        <div class="port-label">Jewellery · 9KT Gold</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Jewellery Photography</span></div>
+    </div>
+    <div class="port-item" style="aspect-ratio:1/1">
+      <div class="port-placeholder" style="background:linear-gradient(135deg,#081a0a,#0f0f0f)">
+        <div style="font-size:40px">🥛</div>
+        <div class="port-label">Amar · Masala Taak</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">FMCG Photography</span></div>
+    </div>
+  </div>
+
+  <div id="reels" class="tab-content reels-grid reveal">
+    <div class="port-item reel">
+      <div class="port-placeholder" style="background:linear-gradient(180deg,#1a0808,#0f0f0f)">
+        <div class="play-btn">▶</div>
+        <div class="port-label">Malaka Spice</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Restaurant Reel</span></div>
+    </div>
+    <div class="port-item reel">
+      <div class="port-placeholder" style="background:linear-gradient(180deg,#0a1208,#0f0f0f)">
+        <div class="play-btn">▶</div>
+        <div class="port-label">Made for People</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Food Reel</span></div>
+    </div>
+    <div class="port-item reel">
+      <div class="port-placeholder" style="background:linear-gradient(180deg,#080a1a,#0f0f0f)">
+        <div class="play-btn">▶</div>
+        <div class="port-label">The Third Space</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Café Reel</span></div>
+    </div>
+    <div class="port-item reel">
+      <div class="port-placeholder" style="background:linear-gradient(180deg,#1a0a08,#0f0f0f)">
+        <div class="play-btn">▶</div>
+        <div class="port-label">Dessert Series</div>
+      </div>
+      <div class="port-overlay"><span class="port-overlay-text">Lifestyle Reel</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND TICKER -->
+<div class="brand-section">
+  <div class="brand-label">Brands We've Worked With</div>
+  <div class="brand-ticker">
+    <div class="brand-item">Amar Dairy</div>
+    <div class="brand-item">Chipzzy</div>
+    <div class="brand-item">Malaka Spice</div>
+    <div class="brand-item">The Third Space</div>
+    <div class="brand-item">Green Land Agro</div>
+    <div class="brand-item">Lustre Jewels</div>
+    <div class="brand-item">Amar Dairy</div>
+    <div class="brand-item">Chipzzy</div>
+    <div class="brand-item">Malaka Spice</div>
+    <div class="brand-item">The Third Space</div>
+    <div class="brand-item">Green Land Agro</div>
+    <div class="brand-item">Lustre Jewels</div>
+  </div>
+</div>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="reveal">
+    <div class="section-tag">Why Choose Us</div>
+    <h2 class="section-title">FROM SCREEN<br>TO STREET</h2>
+    <p style="font-size:16px;color:var(--muted);max-width:500px;margin:0 auto 0;font-weight:300;">We build brands everywhere. Here's what makes us different.</p>
+  </div>
+
+  <div class="why-grid reveal">
+    <div class="why-card" data-num="01">
+      <span class="why-icon">🎯</span>
+      <div class="why-title">Visually Powerful</div>
+      <div class="why-desc">Cinematic visuals, crisp editing, and immersive sound — crafted to leave a lasting impact on every viewer.</div>
+    </div>
+    <div class="why-card" data-num="02">
+      <span class="why-icon">⚡</span>
+      <div class="why-title">Fast Turnaround</div>
+      <div class="why-desc">We understand deadlines. Our streamlined production process delivers quality without compromising speed.</div>
+    </div>
+    <div class="why-card" data-num="03">
+      <span class="why-icon">🌐</span>
+      <div class="why-title">Multi-Format Content</div>
+      <div class="why-desc">One story, every platform. We produce content optimized for TV, digital, social, and OOH simultaneously.</div>
+    </div>
+    <div class="why-card" data-num="04">
+      <span class="why-icon">🧩</span>
+      <div class="why-title">Full-Service Studio</div>
+      <div class="why-desc">From script to screen to street — strategy, production, photography, and campaigns all under one roof.</div>
+    </div>
+    <div class="why-card" data-num="05">
+      <span class="why-icon">💬</span>
+      <div class="why-title">Brand-First Thinking</div>
+      <div class="why-desc">Every creative decision is rooted in your brand's voice, values, and business objectives. Always.</div>
+    </div>
+    <div class="why-card" data-num="06">
+      <span class="why-icon">🤝</span>
+      <div class="why-title">True Collaboration</div>
+      <div class="why-desc">We don't just execute briefs — we become creative partners invested in your brand's long-term success.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-glow"></div>
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <div class="section-tag">Get In Touch</div>
+      <h2 class="section-title">LET'S BUILD<br>SOMETHING<br>GREAT</h2>
+      <p class="contact-desc">Ready to tell your brand's story? Drop us a message and let's create something unforgettable together.</p>
+      <div class="contact-info">
+        <div class="cinfo">
+          <div class="cinfo-icon">📍</div>
+          <div>
+            <div class="cinfo-label">Location</div>
+            <div class="cinfo-val">Pune, Maharashtra, India</div>
+          </div>
+        </div>
+        <div class="cinfo">
+          <div class="cinfo-icon">📧</div>
+          <div>
+            <div class="cinfo-label">Email</div>
+            <div class="cinfo-val">hello@lafz.media</div>
+          </div>
+        </div>
+        <div class="cinfo">
+          <div class="cinfo-icon">📱</div>
+          <div>
+            <div class="cinfo-label">Phone</div>
+            <div class="cinfo-val">+91 XXXXX XXXXX</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form reveal">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Rahul Sharma">
+        </div>
+        <div class="form-group">
+          <label>Your Email</label>
+          <input type="email" placeholder="rahul@company.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Company / Brand</label>
+        <input type="text" placeholder="Brand name">
+      </div>
+      <div class="form-group">
+        <label>Service Required</label>
+        <select>
+          <option value="">Select a service...</option>
+          <option>Film & Video Production</option>
+          <option>Product Photography</option>
+          <option>Creative Campaign</option>
+          <option>Brand Strategy & Content</option>
+          <option>Graphics Designing</option>
+          <option>Logo Designing</option>
+          <option>Packaging Design</option>
+          <option>Multiple Services</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell Us About Your Project</label>
+        <textarea placeholder="What story do you want to tell? Share your brief, timeline, and budget..."></textarea>
+      </div>
+      <button class="form-submit" onclick="handleSubmit()">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Lafz.Media</div>
+      <p class="footer-tagline">We are brands for brands. Crafting stories that build reputation, spark emotion, and drive real-world impact.</p>
+      <div class="social-links">
+        <a href="#" class="social-link" title="Instagram">📸</a>
+        <a href="#" class="social-link" title="YouTube">▶️</a>
+        <a href="#" class="social-link" title="LinkedIn">💼</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Film Production</a></li>
+        <li><a href="#services">Photography</a></li>
+        <li><a href="#services">Creative Campaigns</a></li>
+        <li><a href="#services">Brand Strategy</a></li>
+        <li><a href="#services">Logo Design</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Portfolio</h4>
+      <ul>
+        <li><a href="#portfolio">Ad Films</a></li>
+        <li><a href="#portfolio">Product Photography</a></li>
+        <li><a href="#portfolio">Social Reels</a></li>
+        <li><a href="#portfolio">Corporate Films</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#why">Why Lafz</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 <span>Lafz.Media</span> — All Rights Reserved</div>
+    <div class="footer-made">Pune · Maharashtra · India</div>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.transform = `translate(${mouseX - 6}px, ${mouseY - 6}px)`;
+  });
+  function animateRing() {
+    ringX += (mouseX - ringX - 18) * 0.12;
+    ringY += (mouseY - ringY - 18) * 0.12;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .port-item, .service-card, .pillar').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform += ' scale(2)';
+      ring.style.width = '60px'; ring.style.height = '60px';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '36px'; ring.style.height = '36px';
+    });
+  });
+
+  // Tab switcher
+  function switchTab(btn, id) {
+    document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => {
+      t.classList.remove('active');
+      t.style.display = 'none';
+    });
+    btn.classList.add('active');
+    const target = document.getElementById(id);
+    target.style.display = 'grid';
+    target.classList.add('active');
+  }
+  // Init tab display
+  document.querySelectorAll('.tab-content').forEach(t => {
+    if (!t.classList.contains('active')) t.style.display = 'none';
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Form submit
+  function handleSubmit() {
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = '✓ Message Sent!';
+    btn.style.background = 'linear-gradient(135deg, #00c8e0, #9b5de5)';
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+    }, 3000);
+  }
+
+  // Smooth nav
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
